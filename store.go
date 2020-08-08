@@ -5,19 +5,21 @@ import (
 	"sync"
 )
 
-type store struct {
+// Store has key value pairs
+type Store struct {
 	sync.Mutex
 
 	pairs map[string][]byte
 }
 
-func NewStore() *store {
-	return &store{
+// NewStore return Store
+func NewStore() *Store {
+	return &Store{
 		pairs: make(map[string][]byte),
 	}
 }
 
-func (s *store) get(key string) []byte {
+func (s *Store) get(key string) []byte {
 	s.Lock()
 	defer s.Unlock()
 
@@ -30,7 +32,7 @@ func (s *store) get(key string) []byte {
 	return value
 }
 
-func (s *store) put(key string, value []byte) {
+func (s *Store) put(key string, value []byte) {
 	s.Lock()
 	defer s.Unlock()
 
@@ -42,7 +44,7 @@ func (s *store) put(key string, value []byte) {
 	s.pairs[key] = value
 }
 
-func (s *store) clear() {
+func (s *Store) clear() {
 	s.Lock()
 	defer s.Unlock()
 

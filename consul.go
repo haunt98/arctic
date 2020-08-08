@@ -14,14 +14,15 @@ var _ Arctic = (*consulArctic)(nil)
 type consulArctic struct {
 	client *api.Client
 	config *api.Config
-	store  *store
+	store  *Store
 	prefix string
 }
 
+// NewConsulArctic return Arctic with consul backend
 func NewConsulArctic(
 	client *api.Client,
 	config *api.Config,
-	store *store,
+	store *Store,
 	prefix string,
 ) (Arctic, error) {
 	if prefix == "" {
