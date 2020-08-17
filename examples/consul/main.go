@@ -1,12 +1,12 @@
 package main
 
 import (
-	"arctic"
 	"log"
 	"os"
 	"time"
 
 	"github.com/hashicorp/consul/api"
+	"github.com/haunt98/arctic"
 )
 
 func main() {

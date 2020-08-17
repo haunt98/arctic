@@ -1,4 +1,4 @@
-module arctic
+module github.com/haunt98/arctic
 
 go 1.15
 
