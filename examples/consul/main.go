@@ -2,18 +2,18 @@ package main
 
 import (
 	"log"
-	"os"
 	"time"
 
 	"github.com/hashicorp/consul/api"
 	"github.com/haunt98/arctic"
+	"github.com/haunt98/assert"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	address := os.Getenv("ADDRESS")
-	if address == "" {
-		log.Fatalf("empty ADDRESS")
-	}
+	viper.AutomaticEnv()
+	address := viper.GetString("address")
+	assert.Bool(true, address != "", "empty address")
 
 	config := &api.Config{
 		Address: address,
@@ -21,23 +21,23 @@ func main() {
 
 	client, err := api.NewClient(config)
 	if err != nil {
-		log.Fatalf("failed to new client: %s", err)
+		log.Fatalf("Failed to new client: %s", err)
 	}
 
-	prefix := os.Getenv("PREFIX")
-	if prefix == "" {
-		log.Fatalf("empty PREFIX")
-	}
+	prefix := viper.GetString("prefix")
+	assert.Bool(true, prefix != "", "empty prefix")
 
-	store := arctic.NewStore()
-	arctic, err := arctic.NewConsulArctic(client, config, store, prefix)
+	arc, err := arctic.NewConsulArctic(client, config, arctic.NewStore(), prefix)
 	if err != nil {
-		log.Fatalf("failed to new consul artic: %s", err)
+		log.Fatalf("Failed to new consul artic: %s", err)
 	}
+
+	key := viper.GetString("key")
+	assert.Bool(true, key != "", "empty key")
 
 	for {
-		value := arctic.Get(prefix + "/name")
-		log.Printf("value %s", value)
+		value := arc.Get(arctic.ComposeKey(prefix, key))
+		log.Printf("Value %s\n", value)
 
 		time.Sleep(time.Second)
 	}
