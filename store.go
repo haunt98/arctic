@@ -1,7 +1,6 @@
 package arctic
 
 import (
-	"log"
 	"sync"
 )
 
@@ -22,7 +21,6 @@ func (s *Store) get(key string) []byte {
 
 	value, ok := s.pairs[key]
 	if !ok {
-		log.Printf("key %s not found\n", key)
 		return nil
 	}
 
@@ -32,11 +30,6 @@ func (s *Store) get(key string) []byte {
 func (s *Store) put(key string, value []byte) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-
-	_, ok := s.pairs[key]
-	if ok {
-		log.Printf("key %s exist\n", key)
-	}
 
 	s.pairs[key] = value
 }
