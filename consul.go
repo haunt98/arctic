@@ -3,7 +3,6 @@ package arctic
 import (
 	"fmt"
 	"log"
-	"strings"
 
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/consul/api/watch"
@@ -52,10 +51,7 @@ func NewConsulArctic(
 }
 
 func (a *consulArctic) Get(key string) []byte {
-	if !strings.HasPrefix(key, a.prefix) {
-		log.Printf("key %s does not have prefix %s", key, a.prefix)
-		return nil
-	}
+	key = ComposeKey(a.prefix, key)
 
 	return a.store.get(key)
 }
@@ -90,7 +86,7 @@ func (a *consulArctic) watch() error {
 
 	go func(plan *watch.Plan, config *api.Config) {
 		if err := plan.Run(config.Address); err != nil {
-			log.Printf("failed to run plan %s: %s\n", config.Address, err)
+			log.Fatalf("failed to run plan %s: %s\n", config.Address, err)
 		}
 	}(plan, a.config)
 
