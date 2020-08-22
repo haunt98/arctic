@@ -17,7 +17,7 @@ func NewStore() *Store {
 
 func (s *Store) get(key string) []byte {
 	s.mu.RLock()
-	defer s.mu.RLock()
+	defer s.mu.RUnlock()
 
 	value, ok := s.pairs[key]
 	if !ok {
