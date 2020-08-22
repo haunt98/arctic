@@ -12,8 +12,9 @@ import (
 
 func main() {
 	viper.AutomaticEnv()
+
 	address := viper.GetString("address")
-	assert.Bool(true, address != "", "empty address")
+	assert.True(address != "", "empty address")
 
 	config := &api.Config{
 		Address: address,
@@ -25,7 +26,7 @@ func main() {
 	}
 
 	prefix := viper.GetString("prefix")
-	assert.Bool(true, prefix != "", "empty prefix")
+	assert.True(prefix != "", "empty prefix")
 
 	arc, err := arctic.NewConsulArctic(client, config, arctic.NewStore(), prefix)
 	if err != nil {
@@ -33,7 +34,7 @@ func main() {
 	}
 
 	key := viper.GetString("key")
-	assert.Bool(true, key != "", "empty key")
+	assert.True(key != "", "empty key")
 
 	for {
 		value := arc.Get(arctic.ComposeKey(prefix, key))
