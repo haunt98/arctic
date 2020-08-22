@@ -54,7 +54,7 @@ func NewConsulArctic(
 
 func (a *consulArctic) Get(key string) []byte {
 	if !strings.HasPrefix(key, a.prefix) {
-		log.Printf("key %s has not prefix %s", key, a.prefix)
+		log.Printf("key %s does not have prefix %s", key, a.prefix)
 		return nil
 	}
 
