@@ -6,8 +6,7 @@ import (
 )
 
 type Store struct {
-	sync.Mutex
-
+	mu    sync.RWMutex
 	pairs map[string][]byte
 }
 
@@ -18,8 +17,8 @@ func NewStore() *Store {
 }
 
 func (s *Store) get(key string) []byte {
-	s.Lock()
-	defer s.Unlock()
+	s.mu.RLock()
+	defer s.mu.RLock()
 
 	value, ok := s.pairs[key]
 	if !ok {
@@ -31,8 +30,8 @@ func (s *Store) get(key string) []byte {
 }
 
 func (s *Store) put(key string, value []byte) {
-	s.Lock()
-	defer s.Unlock()
+	s.mu.Lock()
+	defer s.mu.Unlock()
 
 	_, ok := s.pairs[key]
 	if ok {
@@ -43,8 +42,8 @@ func (s *Store) put(key string, value []byte) {
 }
 
 func (s *Store) clear() {
-	s.Lock()
-	defer s.Unlock()
+	s.mu.Lock()
+	defer s.mu.Unlock()
 
 	s.pairs = make(map[string][]byte)
 }
