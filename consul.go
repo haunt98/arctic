@@ -18,7 +18,6 @@ type consulArctic struct {
 	prefix string
 }
 
-// NewConsulArctic return Arctic with consul backend
 func NewConsulArctic(
 	client *api.Client,
 	config *api.Config,

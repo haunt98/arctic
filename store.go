@@ -5,14 +5,12 @@ import (
 	"sync"
 )
 
-// Store has key value pairs
 type Store struct {
 	sync.Mutex
 
 	pairs map[string][]byte
 }
 
-// NewStore return Store
 func NewStore() *Store {
 	return &Store{
 		pairs: make(map[string][]byte),
