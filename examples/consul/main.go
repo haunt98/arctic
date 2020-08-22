@@ -22,7 +22,7 @@ func main() {
 
 	client, err := api.NewClient(config)
 	if err != nil {
-		log.Fatalf("Failed to new client: %s", err)
+		log.Fatalf("failed to new client: %s", err)
 	}
 
 	prefix := viper.GetString("prefix")
@@ -30,15 +30,15 @@ func main() {
 
 	arc, err := arctic.NewConsulArctic(client, config, arctic.NewStore(), prefix)
 	if err != nil {
-		log.Fatalf("Failed to new consul artic: %s", err)
+		log.Fatalf("failed to new consul artic: %s", err)
 	}
 
 	key := viper.GetString("key")
 	assert.True(key != "", "empty key")
 
 	for {
-		value := arc.Get(arctic.ComposeKey(prefix, key))
-		log.Printf("Value %s\n", value)
+		value := arc.Get(key)
+		log.Printf("value %s\n", value)
 
 		time.Sleep(time.Second)
 	}
